@@ -1,7 +1,7 @@
 import cards from "./card";
 import styled from "styled-components";
 import React from "react";
-function FlashCards({ viraCarta }) {
+function FlashCards({ viraCarta, contador, setContador }) {
   const [cardClicked, setcardClicked] = React.useState([]);
   const [answer, setAnswer] = React.useState("");
   const [emJogo, setEmJogo] = React.useState("")
@@ -19,12 +19,13 @@ function FlashCards({ viraCarta }) {
     setAnswer("")
     setcardClicked([])
     setEmJogo("")
+    setContador(contador + 1)
   }
 
   const PerguntaAberta = (a,b) => (
     <StylePerguntaAberta>
       {answer == "" ? cardClicked[0].question : answer}
-      {answer == "" ? <ion-icon onClick={()=>respostaQuesta(a)} name="planet-outline"></ion-icon> : <div><button onClick={acertei}>acertei</button> <button>não lembrei</button> <button>lembrei +-</button></div> }
+      {answer == "" ? <ion-icon onClick={()=>respostaQuesta(a)} name="planet-outline"></ion-icon> : <Buttoes><NaoLembrei >Não lembrei</NaoLembrei> <QuaseNao>Quase não lembrei</QuaseNao> <Zap onClick={acertei}>Zap!</Zap></Buttoes> }
       </StylePerguntaAberta>
       );
   const PerguntaFechada = (a,b) => (
@@ -85,5 +86,39 @@ const StylePerguntaAberta = styled.div`
     right: 10px;
   }
 `;
+
+const Buttoes = styled.div`
+display: flex;
+  width: 80%;
+  justify-content: space-between;
+  margin: 20px;
+  gap: 10px;
+`
+
+const Zap = styled.button`
+width: 150px;
+height: 50px;
+border: none;
+border-radius: 5px;
+background-color: #2FBE34;
+color: white;
+`
+const QuaseNao = styled.button`
+width: 150px;
+height: 50px;
+border: none;
+border-radius: 5px;
+background-color: #FF922E;
+color: white;
+`
+const NaoLembrei = styled.button`
+width: 150px;
+height: 50px;
+border: none;
+border-radius: 5px;
+background-color: #FF3030;
+color: white;
+
+`
 
 export default FlashCards;
