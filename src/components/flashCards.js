@@ -3,42 +3,109 @@ import styled from "styled-components";
 import React from "react";
 function FlashCards({ viraCarta, contador, setContador }) {
   const [cardClicked, setcardClicked] = React.useState([]);
+  const [cardAnswer, setcardAnswer] = React.useState([]);
   const [answer, setAnswer] = React.useState("");
-  const [emJogo, setEmJogo] = React.useState("")
-
+  const [emJogo, setEmJogo] = React.useState("");
 
   function viraCarta(obj) {
     setcardClicked([obj]);
-    setEmJogo("sim")
+    setEmJogo("sim");
+    console.log(String(contador));
+    console.log(cardAnswer[0]);
+    console.log(cardAnswer[String(contador)]);
   }
 
-  function respostaQuesta(obj){
-    setAnswer(obj.answer)
+  function respostaQuest(obj) {
+    setAnswer(obj.answer);
   }
-  function acertei(){
-    setAnswer("")
-    setcardClicked([])
-    setEmJogo("")
-    setContador(contador + 1)
+  function remebered(obj, b) {
+    setAnswer("");
+    setcardClicked([]);
+    setEmJogo("");
+    obj.status = "green";
+    obj.icon = "checkmark-outline";
+    cards[b].status = "green";
+    cards[b].icon = "checkmark-outline";
+    const content = [...cardAnswer, obj];
+    setcardAnswer(content);
+    setContador(contador + 1);
+  }
+  function AlmostNot(obj, b) {
+    setAnswer("");
+    setcardClicked([]);
+    setEmJogo("");
+    obj.status = "yellow";
+    obj.icon = "help-circle-outline";
+    cards[b].status = "yellow";
+    cards[b].icon = "help-circle-outline";
+    const content = [...cardAnswer, obj];
+    setcardAnswer(content);
+    setContador(contador + 1);
+  }
+  function didNot(obj, b) {
+    setAnswer("");
+    setcardClicked([]);
+    setEmJogo("");
+    obj.status = "red";
+    obj.icon = "help-circle-outline";
+    cards[b].status = "red";
+    cards[b].icon = "help-circle-outline";
+    const content = [...cardAnswer, obj];
+    setcardAnswer(content);
+    setContador(contador + 1);
   }
 
-  const PerguntaAberta = (a,b) => (
-    <StylePerguntaAberta>
-      {answer == "" ? cardClicked[0].question : answer}
-      {answer == "" ? <ion-icon onClick={()=>respostaQuesta(a)} name="planet-outline"></ion-icon> : <Buttoes><NaoLembrei >Não lembrei</NaoLembrei> <QuaseNao>Quase não lembrei</QuaseNao> <Zap onClick={acertei}>Zap!</Zap></Buttoes> }
-      </StylePerguntaAberta>
-      );
-  const PerguntaFechada = (a,b) => (
+  const PerguntaFechada = (a, b) => (
     <Card key={b}>
       <p>{`Pergunta ${b + 1}`}</p>
-      <ion-icon onClick={emJogo == "" ? () => viraCarta(a): ""} name="play-outline"> </ion-icon>
+      <ion-icon
+        onClick={emJogo == "" ? () => viraCarta(a) : () => console.log("")}
+        name="play-outline"
+      >
+        
+      </ion-icon>
     </Card>
-      );
-
-
-  return cards.map((a, b) => cardClicked[0] === cards[b] ? PerguntaAberta(a,b) : PerguntaFechada(a,b)
   );
+  const PerguntaAberta = (a, b) => (
+    <StylePerguntaAberta>
+      {answer == "" ? cardClicked[0].question : answer}
+      {answer == "" ? (
+        <ion-icon
+          onClick={() => respostaQuest(a)}
+          name="planet-outline"
+        ></ion-icon>
+      ) : (
+        <Buttoes>
+          <NaoLembrei onClick={() => didNot(a, b)}>Não lembrei</NaoLembrei>
+          <QuaseNao onClick={() => AlmostNot(a, b)}>Quase não lembrei</QuaseNao>
+          <Zap onClick={() => remebered(a, b)}>Zap!</Zap>
+        </Buttoes>
+      )}
+    </StylePerguntaAberta>
+  );
+  const PerguntaRespondida = (b) => (
+    <CardFinalizado key={b}>
+      <p style={{ color: `${cards[b].status}` }}> {`Pergunta ${b + 1}`} </p>
+      <ion-icon
+        style={{ color: `${cards[b].status}` }}
+        name={`${cards[b].icon}`}
+      >
+        
+      </ion-icon>
+    </CardFinalizado>
+  );
+  return cards.map((a, b) =>
+  cardAnswer.includes(cards[b])
+    ? PerguntaRespondida(b)
+    : cardClicked[0] === cards[b]
+    ? PerguntaAberta(a, b)
+    : PerguntaFechada(a, b)
+)
+
 }
+
+
+
 const Card = styled.div`
   width: 300px;
   height: 35px;
@@ -86,39 +153,52 @@ const StylePerguntaAberta = styled.div`
     right: 10px;
   }
 `;
-
 const Buttoes = styled.div`
-display: flex;
+  display: flex;
   width: 80%;
   justify-content: space-between;
   margin: 20px;
   gap: 10px;
-`
-
+`;
 const Zap = styled.button`
-width: 150px;
-height: 50px;
-border: none;
-border-radius: 5px;
-background-color: #2FBE34;
-color: white;
-`
+  width: 150px;
+  height: 50px;
+  border: none;
+  border-radius: 5px;
+  background-color: #2fbe34;
+  color: white;
+`;
 const QuaseNao = styled.button`
-width: 150px;
-height: 50px;
-border: none;
-border-radius: 5px;
-background-color: #FF922E;
-color: white;
-`
+  width: 150px;
+  height: 50px;
+  border: none;
+  border-radius: 5px;
+  background-color: #ff922e;
+  color: white;
+`;
 const NaoLembrei = styled.button`
-width: 150px;
-height: 50px;
-border: none;
-border-radius: 5px;
-background-color: #FF3030;
-color: white;
-
-`
+  width: 150px;
+  height: 50px;
+  border: none;
+  border-radius: 5px;
+  background-color: #ff3030;
+  color: white;
+`;
+const CardFinalizado = styled.div`
+  width: 300px;
+  height: 35px;
+  background-color: #ffffff;
+  margin: auto;
+  padding: 15px;
+  box-shadow: 0px 4px 5px rgba(0, 0, 0, 0.15);
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  ion-icon {
+    color: #00ff00;
+    font-size: 30px;
+  }
+`;
 
 export default FlashCards;
