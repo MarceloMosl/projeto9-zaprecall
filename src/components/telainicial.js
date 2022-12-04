@@ -7,7 +7,7 @@ export default function TelaInicial({setStart}){
         <Content>
             <img src={logo}></img>
             <h1>ZapRecall</h1>
-            <Iniciar onClick={() => setStart(true)}>Inicial Reacall!</Iniciar>
+            <Iniciar data-teste="start-btn" onClick={() => setStart(true)}>Inicial Reacall!</Iniciar>
         </Content>
 
     )

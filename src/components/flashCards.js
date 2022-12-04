@@ -7,6 +7,16 @@ function FlashCards({ contador, setContador }) {
   const [answer, setAnswer] = React.useState("");
   const [emJogo, setEmJogo] = React.useState("");
 
+  function testButton(b){
+    if(cards[b].status == "#2FBE34"){
+      return "zap-icon"
+    }else if(cards[b].status == "#FF922E"){
+      return "partial-icon"
+    }else{
+      return "no-icon"
+    }
+  }
+
   function viraCarta(obj) {
     setcardClicked([obj]);
     setEmJogo("sim");
@@ -53,9 +63,10 @@ function FlashCards({ contador, setContador }) {
   }
 
   const PerguntaFechada = (a, b) => (
-    <Card key={b}>
-      <p>{`Pergunta ${b + 1}`}</p>
+    <Card data-test="flashcard" key={b}>
+      <p data-test="flashcard-text">{`Pergunta ${b + 1}`}</p>
       <ion-icon
+        data-test="play-btn"
         onClick={emJogo == "" ? () => viraCarta(a) : console.log("")}
         name="play-outline"
       ></ion-icon>
@@ -63,17 +74,14 @@ function FlashCards({ contador, setContador }) {
   );
   const PerguntaAberta = (a, b) => (
     <StylePerguntaAberta>
-      {answer == "" ? cardClicked[0].question : answer}
+      {answer == "" ? cardClicked[0].question :<p data-test="flashcard-text"> {answer} </p>}
       {answer == "" ? (
-        <ion-icon
-          onClick={() => respostaQuest(a)}
-          name="repeat"
-        ></ion-icon>
+        <ion-icon data-test="turn-btn" onClick={() => respostaQuest(a)} name="repeat"></ion-icon>
       ) : (
         <Buttoes>
-          <NaoLembrei onClick={() => didNot(a, b)}>Não lembrei</NaoLembrei>
-          <QuaseNao onClick={() => AlmostNot(a, b)}>Quase não lembrei</QuaseNao>
-          <Zap onClick={() => remebered(a, b)}>Zap!</Zap>
+          <NaoLembrei data-test="no-btn" onClick={() => didNot(a, b)}>Não lembrei</NaoLembrei>
+          <QuaseNao data-test="partial-btn" onClick={() => AlmostNot(a, b)}>Quase não lembrei</QuaseNao>
+          <Zap data-test="zap-btn" onClick={() => remebered(a, b)}>Zap!</Zap>
         </Buttoes>
       )}
     </StylePerguntaAberta>
@@ -82,10 +90,12 @@ function FlashCards({ contador, setContador }) {
     <Card key={b}>
       <p
         style={{ color: `${cards[b].status}`, textDecoration: "line-through" }}
+        data-test="flashcard-text"
       >
         {`Pergunta ${b + 1}`}
       </p>
       <ion-icon
+        data-test= {() => testButton(b)}
         style={{ color: `${cards[b].status}` }}
         name={`${cards[b].icon}`}
       ></ion-icon>
@@ -128,7 +138,7 @@ const StylePerguntaAberta = styled.div`
   margin: 12px;
   padding: 15px;
   min-height: 100px;
-  background: #FFFFD4;
+  background: #ffffd4;
   box-shadow: 0px 4px 5px rgba(0, 0, 0, 0.15);
   border-radius: 5px;
   font-family: "Recursive";
@@ -168,7 +178,7 @@ const QuaseNao = styled.button`
   height: 50px;
   border: none;
   border-radius: 5px;
-  background-color: #FF922E;
+  background-color: #ff922e;
   color: white;
 `;
 const NaoLembrei = styled.button`

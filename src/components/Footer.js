@@ -6,7 +6,7 @@ export default function Footer({contador}) {
   return (
     <>
    
-    <Foot>
+    <Foot data-test="footer">
     <Icones>{cards.map((a,b) => !cards[b].icon ? "" : <ion-icon style={{color: `${cards[b].status}`}} name={cards[b].icon}></ion-icon>)}</Icones>
       <section>
         <p>{contador}/{cards.length} Concluidos</p>
