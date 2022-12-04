@@ -61,5 +61,8 @@ width: 100%;
       color: #ffffff;
       margin-left: 20px;
     }
+    button{
+      margin-top: 20px;
+    }
   }
 `;
