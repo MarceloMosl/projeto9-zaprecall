@@ -1,32 +1,45 @@
 import styled from "styled-components";
-import logo from "./assets/img/logo.png";
 import Righteous from "./assets/Righteous-Regular.ttf";
 import FlashCards from "./components/flashCards";
 import React from "react";
 import Footer from "./components/Footer";
+import Header from "./components/header"
+import TelaInicial from "./components/telainicial"
+import { createGlobalStyle } from "styled-components";
+
 export default function App() {
   const [contador, setContador] = React.useState(0);
+  const [start, setStart] = React.useState(false)
 
   return (
     <>
-      <Container>
-        <div>
-          <img src={logo}></img> <h1>ZapRecall</h1>
-        </div>
+      <GlobalStyle />
+     {!start ? <TelaInicial setStart={setStart}/>
+      :<Container>
+        <Header />
         <FlashCards setContador={setContador} contador={contador} />
-      </Container>
-      <Footer contador={contador} />
+        <Footer contador={contador} />
+      </Container>}
+      
     </>
   );
 }
+const GlobalStyle = createGlobalStyle`
+  
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+`
 const Container = styled.div`
+width: 100%;
   background-color: #fb6b6b;
   display: flex;
   flex-direction: column;
   align-items: center;
   margin: 0px;
   padding: 0px;
-  padding-bottom: 200px;
   font-family: "Righteous";
   @font-face {
     font-family: "Righteous";
@@ -36,7 +49,7 @@ const Container = styled.div`
     display: flex;
     align-items: center;
     margin: auto;
-    margin: 40px 0 20px 0;
+    margin: 40px 0 0px 0;
     img {
       width: 52px;
     }
