@@ -49,7 +49,7 @@ width: 100%;
     display: flex;
     align-items: center;
     margin: auto;
-    margin: 40px 0 0px 0;
+    margin-bottom: 20px;
     img {
       width: 52px;
     }

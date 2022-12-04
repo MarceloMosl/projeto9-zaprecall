@@ -4,28 +4,36 @@ import cards from "./card";
 export default function Footer({contador}) {
 
   return (
+    <>
+   
     <Foot>
-      <p>
-        {contador}/{cards.length} Concluidos
-      </p>
+    <Icones>{cards.map((a,b) => !cards[b].icon ? "" : <ion-icon style={{color: `${cards[b].status}`}} name={cards[b].icon}></ion-icon>)}</Icones>
+      <section>
+        <p>{contador}/{cards.length} Concluidos</p>
+      </section>
     </Foot>
+    </>
   );
 }
 
-const Foot = styled.div`
+const Foot = styled.section`
   width: 100%;
-  min-height: 50px;
+  min-height: 60px;
   background-color: #ffffff;
   position: sticky;
   bottom: 0;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
   font-family: "Recursive";
   font-weight: 400;
   font-size: 18px;
   color: #333333;
-  /* padding: 10px; */
-  margin: 0;
+  section{
+    margin: auto;
+  }
 `;
+const Icones = styled.section`
+display: flex;
+margin: auto;
+font-size: 25px;
+`
